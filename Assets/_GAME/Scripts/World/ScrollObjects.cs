@@ -2,13 +2,12 @@ using UnityEngine;
 
 public class ScrollObjects : MonoBehaviour
 {
-    [SerializeField] private GameManager _gameManager;
     [SerializeField] private float _horizontalSize;
     [SerializeField] private float _scrollFactorMultiplier;
 
     private void Update()
     {
-        transform.position -= new Vector3(_gameManager.WorldSpeed * _scrollFactorMultiplier,0,0) * Time.deltaTime;
+        transform.position -= new Vector3(GameManager.WorldSpeed * _scrollFactorMultiplier,0,0) * Time.deltaTime;
 
         if (transform.position.x < -_horizontalSize)
         {

@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class CameraFeedBackController : MonoBehaviour
 {
-    [SerializeField] private GameManager gameManager;
     private float shakeAmount;
     private float shakeSpeed;
     private float shakeFrequency;
@@ -27,9 +26,9 @@ public class CameraFeedBackController : MonoBehaviour
 
     private void ShakeController()
     {
-        shakeAmount = Mathf.Min(gameManager.WorldSpeed * ShakeAmountMultiplier,maxShakeAmount);
-        shakeSpeed = Mathf.Min(gameManager.WorldSpeed * ShakeSpeedMultiplier, maxShakeSpeed);
-        shakeFrequency = Mathf.Max(ShakeFrequencyFactor / gameManager.WorldSpeed,minShakeFrenquency);
+        shakeAmount = Mathf.Min(GameManager.WorldSpeed * ShakeAmountMultiplier,maxShakeAmount);
+        shakeSpeed = Mathf.Min(GameManager.WorldSpeed * ShakeSpeedMultiplier, maxShakeSpeed);
+        shakeFrequency = Mathf.Max(ShakeFrequencyFactor / GameManager.WorldSpeed,minShakeFrenquency);
 
         _shakeTime += Time.deltaTime;
 

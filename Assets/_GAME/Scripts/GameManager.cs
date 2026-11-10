@@ -2,9 +2,18 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] private float _worldSpeed;
-    [SerializeField] private float _metrosAvanzados;
- 
+    [SerializeField] private float _intialWorldSpeed;
+    [SerializeField] private float _intialMetrosAvanzados;
+
+    private static float _worldSpeed;
+    private static float _metrosAvanzados;
+
+    private void Start()
+    {
+        _worldSpeed = _intialWorldSpeed;
+        _metrosAvanzados = _intialMetrosAvanzados;
+    }
+
     private void Update()
     {
         _metrosAvanzados += WorldSpeed * Time.deltaTime;
@@ -15,6 +24,6 @@ public class GameManager : MonoBehaviour
         _worldSpeed = speed;
     }
 
-    public float MetrosAvanzados => _metrosAvanzados;
-    public float WorldSpeed => _worldSpeed;
+    public static float MetrosAvanzados => _metrosAvanzados;
+    public static float WorldSpeed => _worldSpeed;
 }
