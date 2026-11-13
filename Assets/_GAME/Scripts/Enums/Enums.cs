@@ -13,3 +13,17 @@ public enum Entornos
     Calles,
     Todos
 }
+
+public enum EstadoCañon
+{
+    NONE,
+    APUNTANDO,
+    PREPARANDO_DISPARO,
+    DISPARANDO
+}
+
+public enum DeltaTimeType
+{
+    NORMAL,
+    UNSCALE
+}

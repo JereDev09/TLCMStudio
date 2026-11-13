@@ -44,5 +44,11 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: GameObjects
+    uniqueID: 477111217
+    locked: 0
+  - name: Icons
+    uniqueID: 2959671855
+    locked: 0
   m_RenderingLayers:
   - Default

@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
         _metrosAvanzados += WorldSpeed * Time.deltaTime;
     }
 
-    public void SetWorldSpeed(float speed)
+    public static void SetWorldSpeed(float speed)
     {
         _worldSpeed = speed;
     }
