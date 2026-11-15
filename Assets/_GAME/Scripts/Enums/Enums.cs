@@ -27,3 +27,11 @@ public enum DeltaTimeType
     NORMAL,
     UNSCALE
 }
+
+public enum EventPriority
+{
+    BAJA,
+    MEDIA,
+    ALTA,
+    CINEMATICA
+}

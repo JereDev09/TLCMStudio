@@ -1,10 +1,10 @@
 using System;
 using UnityEngine;
 
-[RequireComponent(typeof(Camera))]
 public class CameraFeedBackController : MonoBehaviour
 {
     private Camera _myCamera;
+    public static CameraFeedBackController Instance;
 
     [Header("Camera Shake Config")]
     [SerializeField] private float shakeMultiplier;
@@ -29,34 +29,50 @@ public class CameraFeedBackController : MonoBehaviour
     [SerializeField] private Transform _defaultTarget;
     [SerializeField] private float _defaultZoom;
     [SerializeField] private AnimationCurve _defaultMovementCurve;
-    private AnimationCurve _animationCurve;
-    private Transform _target;
+    [SerializeField] private float _defaultDuration;
     private Vector3 _oldPos;
     private float _oldZoom;
-    private float _cameraZoom;
-    private float _zoomTarget;
-    private float _transformDuration;
     private float _transformTime;
-    private DeltaTimeType _transformUpdateType;
+    private bool _terminoEvento;
+
+    private static CameraEvent cameraEventActive;
 
     public static event Action OnTransformFinished;
 
+    private void Awake()
+    {
+        if (Instance != this && Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+    }
+
     private void Start()
     {
-        _myCamera = gameObject.GetComponent<Camera>();
+        _myCamera = Camera.main;
         _cameraPos = transform.position;
-        ResetTarget(0, DeltaTimeType.NORMAL);
     }
 
     private void Update()
     {
         ShakeController();
 
-        MovementController();
+        EventController();
 
-        transform.position = (Vector3)_cameraPos + _cameraOffset + (Vector3)_shakePos;
+        _myCamera.transform.position = (Vector3)_cameraPos + _cameraOffset + (Vector3)_shakePos;
+    }
 
-        _myCamera.orthographicSize = _cameraZoom;
+    private void OnEnable()
+    {
+        OnTransformFinished += ResetTarget;
+    }
+
+    private void OnDisable()
+    {
+        OnTransformFinished -= ResetTarget;
     }
 
     private void ShakeController()
@@ -76,65 +92,71 @@ public class CameraFeedBackController : MonoBehaviour
         _shakePos = Vector2.Lerp(_shakePos, _targetShake, _shakeSpeed * Time.deltaTime) * shakeMultiplier;
     }
 
-    private void MovementController()
+    private void EventController()
     {
-        float myDeltaTime = _transformUpdateType == DeltaTimeType.NORMAL ? Time.deltaTime : Time.unscaledDeltaTime;
-        
-        if (_transformDuration != 0)
+        if (cameraEventActive == null) return;
+
+        if (!_terminoEvento)
         {
-            //hace que ese evento solo se llame una vez al estar aislado
+            float myDeltaTime = cameraEventActive.updateType == DeltaTimeType.NORMAL ? Time.deltaTime : Time.unscaledDeltaTime;
 
-            if (_transformTime < 1)
+            if (cameraEventActive.duracion != 0)
             {
-                _transformTime += myDeltaTime / _transformDuration;
+                _transformTime += myDeltaTime / cameraEventActive.duracion;
 
-                if (_transformTime >= 1)
-                {
-                    OnTransformFinished?.Invoke();
-                }
+                _transformTime = Mathf.Clamp01(_transformTime);
+            }
+            else
+            {
+                _transformTime = 1f;
             }
 
-            _transformTime = Mathf.Clamp01(_transformTime);
+            Vector2 newPos = Vector2.LerpUnclamped(_oldPos, (Vector2)cameraEventActive.target.position, cameraEventActive.curva.Evaluate(_transformTime));
+            float newZoom = Mathf.LerpUnclamped(_oldZoom, cameraEventActive.zoom, cameraEventActive.curva.Evaluate(_transformTime));
+
+            _myCamera.orthographicSize = newZoom;
+
+            _cameraPos = newPos;
+
+            if (_transformTime >= 1)
+            {
+                _terminoEvento = true;
+
+                OnTransformFinished?.Invoke();
+            }
         }
-
-        Vector2 newPos = Vector2.LerpUnclamped(_oldPos, (Vector2)_target.position, _animationCurve.Evaluate(_transformTime));
-        float newZoom = Mathf.LerpUnclamped(_oldZoom, _zoomTarget, _animationCurve.Evaluate(_transformTime));
-        _cameraZoom = newZoom;
-
-        _cameraPos = newPos;
     }
 
-    public void SetTarget(Transform target,float duration,float zoom,AnimationCurve curve,DeltaTimeType transformType)
+    public void SetTarget(CameraEvent cameraEvent)
     {
-        if (duration < 0)
+        if (cameraEvent.duracion < 0)
         {
             Debug.LogWarning("no pueden haber duracion negativa (usando su valor positivo)");
-            duration = Mathf.Abs(duration);
+            cameraEvent.duracion = Mathf.Abs(cameraEvent.duracion);
         }
 
-        _oldPos = transform.position;
+        cameraEventActive = cameraEvent;
+
+        _oldPos = _cameraPos;
         _oldZoom = _myCamera.orthographicSize;
-        _target = target;
-        _zoomTarget = zoom;
-        _transformDuration = duration;
-        _transformUpdateType = transformType;
-        _animationCurve = curve;
 
-        if (duration != 0f)
-        {
-            _transformTime =  0f;
-        }
-
-        else
-        {
-            _transformTime = 1f;
-
-            OnTransformFinished?.Invoke();
-        }
+        _transformTime = 0f;
+        _terminoEvento = false;
     }
 
-    public void ResetTarget(float duration,DeltaTimeType transformType)
+    private void ResetTarget()
     {
-        SetTarget(_defaultTarget, duration, _defaultZoom,_defaultMovementCurve, transformType);
+        _terminoEvento = true;
+        _transformTime = 0f;
+
+        if (cameraEventActive != null && cameraEventActive.resetearAlTerminar)
+        {
+            CameraEvent cameraEvent = new(false,_defaultTarget,_defaultMovementCurve,DeltaTimeType.NORMAL,_defaultZoom, _defaultDuration);
+            SetTarget(cameraEvent);
+
+            return;
+        }
+
+        cameraEventActive = null;
     }
 }
