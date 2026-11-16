@@ -1,9 +1,9 @@
-using System;
+using MoreMountains.Feedbacks;
 using UnityEngine;
 
 public class EventListener : MonoBehaviour
 {
-    [SerializeField] private GameEvent _introCañon;
+    [SerializeField] private MMF_Player _introCañon;
 
     private void OnEnable()
     {
@@ -17,6 +17,6 @@ public class EventListener : MonoBehaviour
 
     private void TransicionCamaraInicial(Vector2 vector, float arg2)
     {
-        EventManager.StartEvent(_introCañon);
+        _introCañon.PlayFeedbacks();
     }
 }

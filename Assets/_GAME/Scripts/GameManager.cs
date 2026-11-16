@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -7,6 +8,13 @@ public class GameManager : MonoBehaviour
 
     private static float _worldSpeed;
     private static float _metrosAvanzados;
+
+    public static event Action OnGameStart;
+
+    public static void StartGame()
+    {
+        OnGameStart?.Invoke();
+    }
 
     private void Start()
     {

@@ -42,7 +42,6 @@ public class CañonController : MonoBehaviour
         InputManager.GameInputs.Cañon.Accion.performed += OnAction;
 
         OnCambioEstadoCañon += ReseteoEstadoCañon;
-        OnCañonDisparado += ChangeToPlayer;
     }
 
     private void OnDisable()
@@ -51,7 +50,6 @@ public class CañonController : MonoBehaviour
         InputManager.GameInputs.Cañon.Accion.performed -= OnMouseMove;
 
         OnCambioEstadoCañon -= ReseteoEstadoCañon;
-        OnCañonDisparado -= ChangeToPlayer;
     }
 
     private void ReseteoEstadoCañon(EstadoCañon estadoCañon)
@@ -96,16 +94,18 @@ public class CañonController : MonoBehaviour
         }
     }
 
-    private void ChangeToPlayer(Vector2 cañonDir, float potenciaDisparo)
+    public void StartGame()
     {
-        float speed = Mathf.Lerp(_maxVelocityCañon,_minVelocityCañon, Mathf.Abs(potenciaDisparo));
+        float speed = Mathf.Lerp(_maxVelocityCañon, _minVelocityCañon, Mathf.Abs(_potenciaDisparo));
 
         GameManager.SetWorldSpeed(speed);
 
         if (_playerPrefab != null)
         {
-            Instantiate(_playerPrefab,_playerOrigin.transform.position,Quaternion.identity);
+            Instantiate(_playerPrefab, _playerOrigin.transform.position, Quaternion.identity);
         }
+
+        GameManager.StartGame();
     }
 
     private void OnMouseMove(InputAction.CallbackContext context)
