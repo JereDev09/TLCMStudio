@@ -30,6 +30,8 @@ public class CañonController : MonoBehaviour
     [SerializeField] private Transform _cañonPivote;
     [SerializeField] private float _potenciaDisparo;
     [SerializeField] private float _velocidadOscilacionPotencia;
+    [SerializeField] private GameObject _playerPrefab;
+    [SerializeField] private Transform _playerOrigin;
     private float _tiempoPreDisparo;
     public static event Action<EstadoCañon> OnCambioEstadoCañon;
     public static event Action<Vector2,float> OnCañonDisparado;
@@ -99,6 +101,11 @@ public class CañonController : MonoBehaviour
         float speed = Mathf.Lerp(_maxVelocityCañon,_minVelocityCañon, Mathf.Abs(potenciaDisparo));
 
         GameManager.SetWorldSpeed(speed);
+
+        if (_playerPrefab != null)
+        {
+            Instantiate(_playerPrefab,_playerOrigin.transform.position,Quaternion.identity);
+        }
     }
 
     private void OnMouseMove(InputAction.CallbackContext context)
