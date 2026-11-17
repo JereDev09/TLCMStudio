@@ -1,4 +1,5 @@
 using MoreMountains.Feedbacks;
+using System;
 using UnityEngine;
 
 public class EventListener : MonoBehaviour
@@ -7,15 +8,14 @@ public class EventListener : MonoBehaviour
 
     private void OnEnable()
     {
-        CañonController.OnCañonDisparado += TransicionCamaraInicial;
+        CañonController.OnCañonDisparado += IntroCañon;
     }
 
     private void OnDisable()
     {
-        CañonController.OnCañonDisparado -= TransicionCamaraInicial;
+        CañonController.OnCañonDisparado -= IntroCañon;
     }
-
-    private void TransicionCamaraInicial(Vector2 vector, float arg2)
+    private void IntroCañon(Vector2 vector, float arg2)
     {
         _introCañon.PlayFeedbacks();
     }

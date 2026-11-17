@@ -32,9 +32,11 @@ public class CañonController : MonoBehaviour
     [SerializeField] private float _velocidadOscilacionPotencia;
     [SerializeField] private GameObject _playerPrefab;
     [SerializeField] private Transform _playerOrigin;
+    [SerializeField] private float _playerXOrigin;
     private float _tiempoPreDisparo;
     public static event Action<EstadoCañon> OnCambioEstadoCañon;
     public static event Action<Vector2,float> OnCañonDisparado;
+    public static event Action<PlayerController> OnPlayerCreated;
 
     private void OnEnable()
     {
@@ -102,7 +104,12 @@ public class CañonController : MonoBehaviour
 
         if (_playerPrefab != null)
         {
-            Instantiate(_playerPrefab, _playerOrigin.transform.position, Quaternion.identity);
+            PlayerController player = Instantiate(_playerPrefab, new Vector2(_playerXOrigin, _playerOrigin.transform.position.y), Quaternion.identity).GetComponent<PlayerController>();
+
+            player.SetIntialVelocity(speed, _cañonDir);
+
+            OnPlayerCreated?.Invoke(player);
+
         }
 
         GameManager.StartGame();

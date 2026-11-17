@@ -106,7 +106,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bdbc4db28247d834ab4fed9cf8a682d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+  playerData: {fileID: 11400000, guid: ce0005a138cdbb54b90ea4ef58b2da36, type: 2}
+  _intialVelocityFactor: 0.65
   rb: {fileID: 1086175789305981180}
+  _groundTag: Ground
 --- !u!50 &1086175789305981180
 Rigidbody2D:
   serializedVersion: 5
@@ -122,7 +125,7 @@ Rigidbody2D:
   m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
-  m_GravityScale: 1
+  m_GravityScale: 2.5
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -133,7 +136,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 1
-  m_Constraints: 1
+  m_Constraints: 5
 --- !u!70 &3834472958577659127
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
