@@ -4,13 +4,15 @@ using UnityEngine;
 [Serializable]
 public class PlayerHitData
 {
-    public float hitGround;
+    public HitData hitOnGround;
+    public HitData hitOnTrampolin;
 }
 
 [Serializable]
-public class PlayerBounceData
+public class HitData
 {
-    public BounceStructure bounceOnGround;
+    public float velocidad;
+    public BounceStructure bounceData;
 }
 
 [Serializable]
@@ -18,6 +20,7 @@ public class BounceStructure
 {
     [Tooltip("se usara cuando quieres que el objeto te de velocidad Y")]
     public bool usarReboteFijo;
+    public bool soloCayendo;
     [Tooltip("cuanta velocidad en Y te dara a lo que ya tienes")]
     public float valorRebote;
 
@@ -38,13 +41,13 @@ public class BounceStructure
 
 }
 
-[CreateAssetMenu(fileName = "PlayerData", menuName = "Scriptable Objects/PlayerData")]
-public class PlayerData : ScriptableObject
+[CreateAssetMenu(fileName = "PlayerDataSO", menuName = "Scriptable Objects/PlayerDataSO")]
+public class PlayerDataSO : ScriptableObject
 {
     [Header("configuracion de cambio de velocidad")]
     public PlayerHitData playerOnHitData;
 
-    [Header("configuracion de rebote")]
-    public PlayerBounceData playerBounceData;
+    //[Header("configuracion de rebote")]
+    //public PlayerBounceData playerBounceData;
 
 }

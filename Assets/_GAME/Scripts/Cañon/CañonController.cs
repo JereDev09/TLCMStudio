@@ -49,7 +49,7 @@ public class CañonController : MonoBehaviour
     private void OnDisable()
     {
         InputManager.GameInputs.Cañon.Mouse.performed -= OnMouseMove;
-        InputManager.GameInputs.Cañon.Accion.performed -= OnMouseMove;
+        InputManager.GameInputs.Cañon.Accion.performed -= OnAction;
 
         OnCambioEstadoCañon -= ReseteoEstadoCañon;
     }

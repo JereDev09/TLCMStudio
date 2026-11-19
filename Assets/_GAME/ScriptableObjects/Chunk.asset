@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 437bf3d146e54094ca4475344f9cf677, type: 3}
-  m_Name: Moco
+  m_Name: Chunk
   m_EditorClassIdentifier: Assembly-CSharp::SpawnerDataSO
-  _ObjectPrefab: {fileID: 0}
-  _TipoSpawneo: 0
-  _DondeSpawneara: 0
-  _SpawnInArea: 1
+  _ObjectPrefab: {fileID: 2028246551071565038, guid: 77a87a64f1064bf42bc68442d5b5eb62, type: 3}
+  _TipoSpawneo: 1
+  _DondeSpawneara: 3
+  _SpawnInArea: 0
   _UsarMultiplesReferencias: 0
   _Referencias:
   - {fileID: 0}

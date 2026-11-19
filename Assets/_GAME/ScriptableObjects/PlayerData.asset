@@ -9,13 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e2531710776a55041b23854449177d3c, type: 3}
+  m_Script: {fileID: 11500000, guid: 00e09f5578b6858439991bc8a67b85ff, type: 3}
   m_Name: PlayerData
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerData
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerDataSO
   playerOnHitData:
-    hitGround: -15
-  playerBounceData:
-    bounceOnGround:
-      usarReboteFijo: 0
-      valorRebote: 0
-      conservacionVelocidadY: 0.75
+    hitOnGround:
+      velocidad: -15
+      bounceData:
+        usarReboteFijo: 1
+        soloCayendo: 0
+        valorRebote: 20
+        conservacionVelocidadY: 0
+    hitOnTrampolin:
+      velocidad: 0
+      bounceData:
+        usarReboteFijo: 1
+        soloCayendo: 1
+        valorRebote: 25
+        conservacionVelocidadY: 0

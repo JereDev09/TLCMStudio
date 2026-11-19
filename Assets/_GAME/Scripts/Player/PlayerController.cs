@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private PlayerData playerData;
+    [SerializeField] private PlayerDataSO playerData;
 
     [Tooltip("cuanta parte de la velocidad brindada se le pasara")]
     [Range(0f, 1f)]
@@ -50,17 +50,32 @@ public class PlayerController : MonoBehaviour
         {
             Debug.Log("chocoConGround");
 
-            GameManager.AddWorldSpeed(playerData.playerOnHitData.hitGround);
-
-            if (GameManager.WorldSpeed <= 0f) return;
-
-            BounceStructure onGround = playerData.playerBounceData.bounceOnGround;
-
-            SetNewVelocity(onGround.GetNewYSpeed(lastValidYVelocity));
+            AplicarHit(playerData.playerOnHitData.hitOnGround);
         }
     }
 
-    
+    public void AplicarHit(HitData hitData)
+    {
+        if (hitData.bounceData.soloCayendo && lastValidYVelocity > 0f) return;
+
+        GameManager.AddWorldSpeed(hitData.velocidad);
+
+        if (GameManager.WorldSpeed <= 0f) return;
+
+        SetNewVelocity(hitData.bounceData.GetNewYSpeed(lastValidYVelocity));
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (GameManager.GameEnded) return;
+
+        IImpactable Entity = collision.GetComponent<IImpactable>();
+
+        if (Entity != null)
+        {
+            Entity.OnImpact(this);
+        }
+    }
 
     public void SetNewVelocity(float velocity)
     {
@@ -68,4 +83,7 @@ public class PlayerController : MonoBehaviour
 
         rb.linearVelocity = new Vector2(0, velocity);
     }
+
+    public float velocityY => rb.linearVelocityY;
+    public PlayerHitData playerHitData => playerData.playerOnHitData;
 }
