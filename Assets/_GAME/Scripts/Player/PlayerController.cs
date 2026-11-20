@@ -54,6 +54,26 @@ public class PlayerController : MonoBehaviour
 
             GameManager.RestartCombo();
         }
+        else
+        {
+            IImpactable Entity = collision.collider.GetComponent<IImpactable>();
+
+            if (Entity != null)
+            {
+                Entity.OnImpact(this);
+            }
+        }
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (GameManager.GameEnded) return;
+
+        IImpactable Entity = collision.GetComponent<IImpactable>();
+
+        if (Entity != null)
+        {
+            Entity.OnImpact(this);
+        }
     }
 
     /// <summary>
@@ -75,18 +95,6 @@ public class PlayerController : MonoBehaviour
         return true;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (GameManager.GameEnded) return;
-
-        IImpactable Entity = collision.GetComponent<IImpactable>();
-
-        if (Entity != null)
-        {
-            Entity.OnImpact(this);
-        }
-    }
-
     public void SetNewVelocity(float velocity)
     {
         Debug.Log(velocity);
@@ -95,5 +103,6 @@ public class PlayerController : MonoBehaviour
     }
 
     public float velocityY => rb.linearVelocityY;
+    public float LastVelocityY => lastValidYVelocity;
     public PlayerHitData playerHitData => playerData.playerOnHitData;
 }
