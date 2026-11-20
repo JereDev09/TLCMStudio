@@ -22,16 +22,9 @@ public enum EstadoCañon
     DISPARANDO
 }
 
-public enum DeltaTimeType
+public enum TipoRebote
 {
-    NORMAL,
-    UNSCALE
-}
-
-public enum EventPriority
-{
-    BAJA,
-    MEDIA,
-    ALTA,
-    CINEMATICA
+    None, // no toca la velocidad Y
+    Fijo, // pone una velocidad Y concreta
+    Conservativo // devuelve un porcentaje de la velocidad con la que llegaste
 }

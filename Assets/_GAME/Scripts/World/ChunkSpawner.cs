@@ -14,10 +14,17 @@ public class ChunkSpawner : MonoBehaviour
     [SerializeField] private Chunk[] _chunksIniciales; //para tutorial
     [SerializeField] private ChunkEntry[] _chunks;
     [SerializeField] private float _spawnX = 40f;
+
+    [Header("Hueco entre edificios")]
     [SerializeField] private float _segundosMinimosSpawn;
     [SerializeField] private float _segundosMaximosSpawn;
-    [SerializeField] private float _metrosMinimos;
-    [SerializeField] private float _metrosMaximos;
+    [SerializeField] private float _metrosMinimosSpawn;
+    [SerializeField] private float _metrosMaximosSpawn;
+
+    [Header("Despegue")]
+    [SerializeField] private float _segundosMinimosDespegue;
+    [SerializeField] private float _segundosMaximosDespegue;
+    [SerializeField] private float _metrosMinimosDespegue;
 
     private float _distanciaToSpawn;
 
@@ -27,30 +34,43 @@ public class ChunkSpawner : MonoBehaviour
 
     private bool _canSpawn;
 
+    private Transform _playerPos;
+
     private float GetNextDistanceToSpawn()
     {
         float time = UnityEngine.Random.Range(_segundosMinimosSpawn, _segundosMaximosSpawn);
         float espacio = GameManager.WorldSpeed * time;
-        espacio = Mathf.Clamp(espacio, _metrosMinimos, _metrosMaximos);
+        espacio = Mathf.Clamp(espacio, _metrosMinimosSpawn, _metrosMaximosSpawn);
 
         return espacio;
     }
 
-    private void Start()
+    private float GetDistanciaDespegue()
     {
-        _distanciaToSpawn = GetNextDistanceToSpawn();
+        float time = UnityEngine.Random.Range(_segundosMinimosDespegue, _segundosMaximosDespegue);
+        float espacio = GameManager.WorldSpeed * time;
+        espacio = Mathf.Max(_metrosMinimosDespegue, espacio);
+
+        return espacio;
     }
 
     private void OnEnable()
     {
         GameManager.OnGameStart += GameStart;
         GameManager.OnGameEnd += GameEnd;
+        CañonController.OnPlayerCreated += SetPlayerRef;
+    }
+
+    private void SetPlayerRef(PlayerController controller)
+    {
+        _playerPos = controller.transform;
     }
 
     private void OnDisable()
     {
         GameManager.OnGameStart -= GameStart;
         GameManager.OnGameEnd -= GameEnd;
+        CañonController.OnPlayerCreated -= SetPlayerRef;
     }
 
     private void GameEnd()
@@ -71,7 +91,7 @@ public class ChunkSpawner : MonoBehaviour
         {
             Chunk prefab = SiguientePrefab();
 
-            float x = _ultimo == null ? 0f : _ultimo.BordeDerecho + _distanciaToSpawn;
+            float x = _ultimo == null ? _playerPos.position.x + GetDistanciaDespegue() : _ultimo.BordeDerecho + _distanciaToSpawn;
             _ultimo = Instantiate(prefab, new Vector3(x, 0f, 0f), Quaternion.identity);
 
             _distanciaToSpawn = GetNextDistanceToSpawn();

@@ -8,9 +8,11 @@ public class GameManager : MonoBehaviour
 
     private static float _worldSpeed;
     private static float _metrosAvanzados;
+    private static int _combo;
 
     public static event Action OnGameStart;
     public static event Action OnGameEnd;
+    public static event Action<int> OnComboChanged;
     public static bool GameEnded;
 
     public static void StartGame()
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour
     {
         _worldSpeed = _intialWorldSpeed;
         _metrosAvanzados = _intialMetrosAvanzados;
+        _combo = 0;
     }
 
     private void Update()
@@ -43,6 +46,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    public static void AddOneCombo()
+    {
+        _combo += 1;
+        OnComboChanged?.Invoke(_combo);
+        Debug.Log("combo " + _combo + "!");
+    }
+
+    public static void RestartCombo()
+    {
+        _combo = 0;
+        OnComboChanged?.Invoke(_combo);
+        Debug.Log("COMBO PERDIDO :C");
+    }
+
     public static void SetWorldSpeed(float speed)
     {
         _worldSpeed = speed;
@@ -57,4 +74,5 @@ public class GameManager : MonoBehaviour
 
     public static float MetrosAvanzados => _metrosAvanzados;
     public static float WorldSpeed => _worldSpeed;
+    public static int Combo => _combo;
 }

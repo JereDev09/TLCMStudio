@@ -15,15 +15,41 @@ MonoBehaviour:
   playerOnHitData:
     hitOnGround:
       velocidad: -15
+      perdidaPorcentual: 0
       bounceData:
-        usarReboteFijo: 1
+        tipoRebote: 1
         soloCayendo: 0
         valorRebote: 20
         conservacionVelocidadY: 0
     hitOnTrampolin:
       velocidad: 0
+      perdidaPorcentual: 0
       bounceData:
-        usarReboteFijo: 1
+        tipoRebote: 1
         soloCayendo: 1
         valorRebote: 25
+        conservacionVelocidadY: 0
+    hitOnBalcon:
+      velocidad: 0
+      perdidaPorcentual: 0
+      bounceData:
+        tipoRebote: 1
+        soloCayendo: 1
+        valorRebote: 20
+        conservacionVelocidadY: 0
+    hitOnTecho:
+      velocidad: -5
+      perdidaPorcentual: 0
+      bounceData:
+        tipoRebote: 1
+        soloCayendo: 0
+        valorRebote: 18
+        conservacionVelocidadY: 0
+    hitOnParedSolida:
+      velocidad: 0
+      perdidaPorcentual: 0.35
+      bounceData:
+        tipoRebote: 0
+        soloCayendo: 0
+        valorRebote: 0
         conservacionVelocidadY: 0

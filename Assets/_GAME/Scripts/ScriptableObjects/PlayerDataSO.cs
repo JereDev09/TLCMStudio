@@ -6,12 +6,18 @@ public class PlayerHitData
 {
     public HitData hitOnGround;
     public HitData hitOnTrampolin;
+    public HitData hitOnBalcon;
+    public HitData hitOnTecho;
+    public HitData hitOnParedSolida;
 }
 
 [Serializable]
 public class HitData
 {
+    [Tooltip("se suma a WorldSpeed; negativo frena")]
     public float velocidad;
+    [Range(0f,1f)]
+    public float perdidaPorcentual;
     public BounceStructure bounceData;
 }
 
@@ -19,7 +25,7 @@ public class HitData
 public class BounceStructure
 {
     [Tooltip("se usara cuando quieres que el objeto te de velocidad Y")]
-    public bool usarReboteFijo;
+    public TipoRebote tipoRebote;
     public bool soloCayendo;
     [Tooltip("cuanta velocidad en Y te dara a lo que ya tienes")]
     public float valorRebote;
@@ -29,13 +35,16 @@ public class BounceStructure
 
     public float GetNewYSpeed(float verticalSpeed)
     {
-        if (usarReboteFijo)
+        switch (tipoRebote)
         {
-            return verticalSpeed <= 0 ? valorRebote : verticalSpeed - valorRebote;
-        }
-        else
-        {
-            return -(verticalSpeed * conservacionVelocidadY);
+            case TipoRebote.None:
+                return verticalSpeed;
+            case TipoRebote.Fijo:
+                return Mathf.Max(valorRebote,verticalSpeed);
+            case TipoRebote.Conservativo:
+                return -(verticalSpeed * conservacionVelocidadY);
+            default:
+                return verticalSpeed;
         }
     }
 

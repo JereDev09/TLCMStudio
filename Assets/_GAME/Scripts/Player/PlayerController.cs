@@ -51,18 +51,28 @@ public class PlayerController : MonoBehaviour
             Debug.Log("chocoConGround");
 
             AplicarHit(playerData.playerOnHitData.hitOnGround);
+
+            GameManager.RestartCombo();
         }
     }
 
-    public void AplicarHit(HitData hitData)
+    /// <summary>
+    /// aplica el hit al jugador y devuelve true si el jugador recibio el hit
+    /// </summary>
+    public bool AplicarHit(HitData hitData)
     {
-        if (hitData.bounceData.soloCayendo && lastValidYVelocity > 0f) return;
+        if (hitData.bounceData.soloCayendo && lastValidYVelocity > 0f) return false;
 
+        GameManager.AddWorldSpeed(-(GameManager.WorldSpeed * hitData.perdidaPorcentual));
         GameManager.AddWorldSpeed(hitData.velocidad);
 
-        if (GameManager.WorldSpeed <= 0f) return;
+        if (GameManager.WorldSpeed <= 0f) return true;
+
+        if (hitData.bounceData.tipoRebote == TipoRebote.None) return true;
 
         SetNewVelocity(hitData.bounceData.GetNewYSpeed(lastValidYVelocity));
+
+        return true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
