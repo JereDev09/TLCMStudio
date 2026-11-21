@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Losa : MonoBehaviour, IImpactable
+public class Losa : MonoBehaviour, IImpactable , IRompible
 {
     [SerializeField] private float _resistencia = 25f;
     [SerializeField] private float _conservacion = 0.8f;
@@ -13,11 +13,14 @@ public class Losa : MonoBehaviour, IImpactable
         {
             controller.SetNewVelocity(controller.LastVelocityY * _conservacion);
 
-            GameManager.AddOneCombo();
-
-            Destroy(gameObject);
+            Romper();
         }
+    }
 
+    public void Romper()
+    {
+        GameManager.AddOneCombo();
 
+        Destroy(gameObject);
     }
 }
