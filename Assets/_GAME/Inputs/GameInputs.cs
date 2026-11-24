@@ -100,6 +100,15 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Dinamita"",
+                    ""type"": ""Button"",
+                    ""id"": ""3bda8831-ba6f-4868-bdd8-c05b71986b7a"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -111,6 +120,17 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": "";Keyboard&Mouse"",
                     ""action"": ""Mouse"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""90d06de2-435b-4303-abcc-ab1d4d8d9af7"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""Dinamita"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -758,6 +778,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Mouse = m_Player.FindAction("Mouse", throwIfNotFound: true);
+        m_Player_Dinamita = m_Player.FindAction("Dinamita", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -857,6 +878,7 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Mouse;
+    private readonly InputAction m_Player_Dinamita;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -872,6 +894,10 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Mouse".
         /// </summary>
         public InputAction @Mouse => m_Wrapper.m_Player_Mouse;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/Dinamita".
+        /// </summary>
+        public InputAction @Dinamita => m_Wrapper.m_Player_Dinamita;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -901,6 +927,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @Mouse.started += instance.OnMouse;
             @Mouse.performed += instance.OnMouse;
             @Mouse.canceled += instance.OnMouse;
+            @Dinamita.started += instance.OnDinamita;
+            @Dinamita.performed += instance.OnDinamita;
+            @Dinamita.canceled += instance.OnDinamita;
         }
 
         /// <summary>
@@ -915,6 +944,9 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
             @Mouse.started -= instance.OnMouse;
             @Mouse.performed -= instance.OnMouse;
             @Mouse.canceled -= instance.OnMouse;
+            @Dinamita.started -= instance.OnDinamita;
+            @Dinamita.performed -= instance.OnDinamita;
+            @Dinamita.canceled -= instance.OnDinamita;
         }
 
         /// <summary>
@@ -1329,6 +1361,13 @@ public partial class @GameInputs: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnMouse(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "Dinamita" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnDinamita(InputAction.CallbackContext context);
     }
     /// <summary>
     /// Interface to implement callback methods for all input action callbacks associated with input actions defined by "UI" which allows adding and removing callbacks.

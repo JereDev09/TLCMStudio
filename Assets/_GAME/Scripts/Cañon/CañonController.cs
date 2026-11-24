@@ -40,6 +40,8 @@ public class CañonController : MonoBehaviour
 
     private void OnEnable()
     {
+        InputManager.GameInputs.Cañon.Enable();
+
         InputManager.GameInputs.Cañon.Mouse.performed += OnMouseMove;
         InputManager.GameInputs.Cañon.Accion.performed += OnAction;
 
@@ -50,6 +52,8 @@ public class CañonController : MonoBehaviour
     {
         InputManager.GameInputs.Cañon.Mouse.performed -= OnMouseMove;
         InputManager.GameInputs.Cañon.Accion.performed -= OnAction;
+
+        InputManager.GameInputs.Cañon.Disable();
 
         OnCambioEstadoCañon -= ReseteoEstadoCañon;
     }
@@ -113,6 +117,8 @@ public class CañonController : MonoBehaviour
         }
 
         GameManager.StartGame();
+
+        InputManager.GameInputs.Cañon.Disable();
     }
 
     private void OnMouseMove(InputAction.CallbackContext context)
