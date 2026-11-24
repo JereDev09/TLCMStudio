@@ -18,7 +18,7 @@ public class ScrollObjects : MonoBehaviour
     {
         if (_finalizado) return;
 
-        transform.position -= new Vector3(GameManager.WorldSpeed * _scrollFactorMultiplier,0,0) * Time.deltaTime;
+        transform.position -= new Vector3(GameManager.instance.WorldSpeed * _scrollFactorMultiplier,0,0) * Time.deltaTime;
 
         if (_canRepeat)
         {

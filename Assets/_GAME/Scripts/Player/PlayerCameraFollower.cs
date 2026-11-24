@@ -16,7 +16,7 @@ public class PlayerCameraFollower : MonoBehaviour
 
     private void SetCameraTarget(PlayerController controller)
     {
-        _target = controller.transform;
+        _target = controller.PlayerTransform;
     }
 
     private void Update()

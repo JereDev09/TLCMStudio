@@ -5,6 +5,8 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private PlayerDataSO playerData;
 
+    [SerializeField] private Transform playerTransform;
+
     [Tooltip("cuanta parte de la velocidad brindada se le pasara")]
     [Range(0f, 1f)]
     [SerializeField] private float _intialVelocityFactor;
@@ -17,6 +19,8 @@ public class PlayerController : MonoBehaviour
     private void OnEnable()
     {
         GameManager.OnGameEnd += GameEnd;
+        PlayerCollisionController.ChocoConCollider += OnCollisionEnter2D;
+        PlayerCollisionController.ChocoConTrigger += OnTriggerEnter2D;
     }
 
     private void GameEnd()
@@ -27,6 +31,8 @@ public class PlayerController : MonoBehaviour
     private void OnDisable()
     {
         GameManager.OnGameEnd -= GameEnd;
+        PlayerCollisionController.ChocoConCollider -= OnCollisionEnter2D;
+        PlayerCollisionController.ChocoConTrigger -= OnTriggerEnter2D;
     }
 
     public void SetIntialVelocity(float velocity, Vector2 dir)
@@ -44,7 +50,7 @@ public class PlayerController : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (GameManager.GameEnded) return;
+        if (GameManager.instance.GameEnded) return;
 
         if (collision.gameObject.CompareTag(_groundTag))
         {
@@ -52,7 +58,7 @@ public class PlayerController : MonoBehaviour
 
             AplicarHit(playerData.playerOnHitData.hitOnGround);
 
-            GameManager.RestartCombo();
+            GameManager.instance.RestartCombo();
         }
         else
         {
@@ -66,7 +72,7 @@ public class PlayerController : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (GameManager.GameEnded) return;
+        if (GameManager.instance.GameEnded) return;
 
         IImpactable Entity = collision.GetComponent<IImpactable>();
 
@@ -83,10 +89,10 @@ public class PlayerController : MonoBehaviour
     {
         if (hitData.bounceData.soloCayendo && lastValidYVelocity > 0f) return false;
 
-        GameManager.AddWorldSpeed(-(GameManager.WorldSpeed * hitData.perdidaPorcentual));
-        GameManager.AddWorldSpeed(hitData.velocidad);
+        GameManager.instance.AddWorldSpeed(-(GameManager.instance.WorldSpeed * hitData.perdidaPorcentual));
+        GameManager.instance.AddWorldSpeed(hitData.velocidad);
 
-        if (GameManager.WorldSpeed <= 0f) return true;
+        if (GameManager.instance.WorldSpeed <= 0f) return true;
 
         if (hitData.bounceData.tipoRebote == TipoRebote.None) return true;
 
@@ -105,4 +111,6 @@ public class PlayerController : MonoBehaviour
     public float velocityY => rb.linearVelocityY;
     public float LastVelocityY => lastValidYVelocity;
     public PlayerHitData playerHitData => playerData.playerOnHitData;
+
+    public Transform PlayerTransform => playerTransform;
 }

@@ -29,7 +29,7 @@ public class PlayerHUDController : MonoBehaviour
 
     private void Update()
     {
-        _metrosRecorridos.text = _metrosName + (int)GameManager.MetrosAvanzados;
-        _velocidadMovimiento.text = _velocidadaName + (int)GameManager.WorldSpeed;
+        _metrosRecorridos.text = _metrosName + (int)GameManager.instance.MetrosAvanzados;
+        _velocidadMovimiento.text = _velocidadaName + (int)GameManager.instance.WorldSpeed;
     }
 }

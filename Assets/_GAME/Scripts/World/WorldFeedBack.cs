@@ -11,7 +11,7 @@ public class WorldFeedBack : MonoBehaviour
 
     private void Update()
     {
-        float progress = GameManager.WorldSpeed * _factorSpawneo;
+        float progress = GameManager.instance.WorldSpeed * _factorSpawneo;
 
         ParticleSystem.EmissionModule Module = _lineasVelocidad.emission;
 

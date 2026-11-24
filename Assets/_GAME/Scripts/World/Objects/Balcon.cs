@@ -6,6 +6,6 @@ public class Balcon : MonoBehaviour, IImpactable
     {
         bool aplicoHit = controller.AplicarHit(controller.playerHitData.hitOnBalcon);
 
-        if (aplicoHit) GameManager.AddOneCombo();
+        if (aplicoHit) GameManager.instance.AddOneCombo();
     }
 }

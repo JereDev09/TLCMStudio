@@ -9,7 +9,7 @@ public class ParedFragil : MonoBehaviour, IImpactable, IRompible
 
     public void Romper()
     {
-        GameManager.AddOneCombo();
+        GameManager.instance.AddOneCombo();
 
         Destroy(gameObject);
     }

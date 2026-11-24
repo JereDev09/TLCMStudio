@@ -104,7 +104,7 @@ public class CañonController : MonoBehaviour
     {
         float speed = Mathf.Lerp(_maxVelocityCañon, _minVelocityCañon, Mathf.Abs(_potenciaDisparo));
 
-        GameManager.SetWorldSpeed(speed);
+        GameManager.instance.SetWorldSpeed(speed);
 
         if (_playerPrefab != null)
         {
@@ -116,7 +116,7 @@ public class CañonController : MonoBehaviour
 
         }
 
-        GameManager.StartGame();
+        GameManager.instance.StartGame();
 
         InputManager.GameInputs.Cañon.Disable();
     }

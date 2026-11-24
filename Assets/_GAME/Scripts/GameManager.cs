@@ -3,19 +3,33 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public static GameManager instance;
+
     [SerializeField] private float _intialWorldSpeed;
     [SerializeField] private float _intialMetrosAvanzados;
 
-    private static float _worldSpeed;
-    private static float _metrosAvanzados;
-    private static int _combo;
+    private float _worldSpeed;
+    private float _metrosAvanzados;
+    private int _combo;
 
     public static event Action OnGameStart;
     public static event Action OnGameEnd;
     public static event Action<int> OnComboChanged;
-    public static bool GameEnded;
+    public bool GameEnded;
 
-    public static void StartGame()
+    public void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
+
+    public void StartGame()
     {
         OnGameStart?.Invoke();
         GameEnded = false;
@@ -46,33 +60,33 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public static void AddOneCombo()
+    public void AddOneCombo()
     {
         _combo += 1;
         OnComboChanged?.Invoke(_combo);
         Debug.Log("combo " + _combo + "!");
     }
 
-    public static void RestartCombo()
+    public void RestartCombo()
     {
         _combo = 0;
         OnComboChanged?.Invoke(_combo);
         Debug.Log("COMBO PERDIDO :C");
     }
 
-    public static void SetWorldSpeed(float speed)
+    public void SetWorldSpeed(float speed)
     {
         _worldSpeed = speed;
     }
 
-    public static void AddWorldSpeed(float value)
+    public void AddWorldSpeed(float value)
     {
         if (GameEnded) return;
 
         _worldSpeed += value;
     }
 
-    public static float MetrosAvanzados => _metrosAvanzados;
-    public static float WorldSpeed => _worldSpeed;
-    public static int Combo => _combo;
+    public float MetrosAvanzados => _metrosAvanzados;
+    public float WorldSpeed => _worldSpeed;
+    public int Combo => _combo;
 }

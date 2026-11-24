@@ -39,7 +39,7 @@ public class ChunkSpawner : MonoBehaviour
     private float GetNextDistanceToSpawn()
     {
         float time = UnityEngine.Random.Range(_segundosMinimosSpawn, _segundosMaximosSpawn);
-        float espacio = GameManager.WorldSpeed * time;
+        float espacio = GameManager.instance.WorldSpeed * time;
         espacio = Mathf.Clamp(espacio, _metrosMinimosSpawn, _metrosMaximosSpawn);
 
         return espacio;
@@ -48,7 +48,7 @@ public class ChunkSpawner : MonoBehaviour
     private float GetDistanciaDespegue()
     {
         float time = UnityEngine.Random.Range(_segundosMinimosDespegue, _segundosMaximosDespegue);
-        float espacio = GameManager.WorldSpeed * time;
+        float espacio = GameManager.instance.WorldSpeed * time;
         espacio = Mathf.Max(_metrosMinimosDespegue, espacio);
 
         return espacio;
@@ -109,7 +109,7 @@ public class ChunkSpawner : MonoBehaviour
     {
         if (_indiceInicial < _chunksIniciales.Length) return _chunksIniciales[_indiceInicial++];
 
-        float metros = GameManager.MetrosAvanzados;
+        float metros = GameManager.instance.MetrosAvanzados;
         float total = 0f;
 
         foreach(var c in _chunks)

@@ -19,7 +19,7 @@ public class Losa : MonoBehaviour, IImpactable , IRompible
 
     public void Romper()
     {
-        GameManager.AddOneCombo();
+        GameManager.instance.AddOneCombo();
 
         Destroy(gameObject);
     }
